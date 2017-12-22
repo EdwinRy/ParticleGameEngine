@@ -1,5 +1,8 @@
+#pragma once
 #include <stdlib.h>
 #include <string>
+#include "../ParticleRenderer/Renderer.h"
+
 namespace Display{
     class DisplayManager
     {
@@ -7,8 +10,9 @@ namespace Display{
         DisplayManager();
         ~DisplayManager();
 
-        void CreateDisplay(int width, int height, char* title);
-        void DeleteDisplay();
+        void createDisplay(
+            int width, int height, char* title, RenderingEngine::Renderer renderer);
+        void deleteDisplay();
 
     };
 }

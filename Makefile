@@ -11,5 +11,5 @@ all:
 	$(mathematics) \
 	$(physics) \
 	$(tests) \
-	-lSDL \
+	-lSDL2 \
 	-o $(out)

@@ -4,6 +4,7 @@
 #include <vulkan/vulkan.h>
 #include <SDL2/SDL_vulkan.h>
 #include <iostream>
+#include <vector>
 
 using namespace Display;
 //using namespace RenderingEngine;
@@ -22,7 +23,7 @@ void DisplayManager::createDisplay(
     SDL_Init(SDL_INIT_EVERYTHING);
 
     //Setup the window to use the Vulkan API
-    if(renderer.getRenderingAPI == VULKAN)
+    if(renderer.getRenderingAPI == RenderingEngine::VULKAN)
     {
         window = SDL_CreateWindow(
             title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -42,18 +43,31 @@ void DisplayManager::createDisplay(
 
         };
 
-        uint32_t extensionCount;       
-        SDL_Vulkan_GetInstanceExtensions(window,&extensionCount,nullptr);
+        uint32_t extensionCount;   
+        std::vector<char*> extensionNames; 
+        SDL_Vulkan_GetInstanceExtensions(window,&extensionCount,extensionNames.data);
 
         //Information about the Vulkan instance
         VkInstanceCreateInfo instanceInfo;
         instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         instanceInfo.pApplicationInfo = &appinfo;
+        instanceInfo.enabledExtensionCount = extensionCount;
+        instanceInfo.ppEnabledExtensionNames = extensionNames.data;
+
+        //Vulkan instance
+        VkInstance instance;      
+        VkResult result = vkCreateInstance(&instanceInfo,nullptr,&instance);
+
+        if(result != VK_SUCCESS)
+        {
+            std::cout << "Failed to create vulkan instance!" << std::endl;
+            exit(1);
+        }
        
     }
 
     //Setup the window to use the OpenGL API
-    else if(renderer.getRenderingAPI == OPENGL)
+    else if(renderer.getRenderingAPI == RenderingEngine::OPENGL)
     {
         window = SDL_CreateWindow(
             title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

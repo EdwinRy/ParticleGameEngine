@@ -69,11 +69,11 @@ void ModelLoader::buildFace(FileInputStream *stream)
         currMesh.positions.push_back(position.y);
         currMesh.positions.push_back(position.z);
 
-        vec2 texture = textures[v - 1];
+        vec2 texture = textures[t - 1];
         currMesh.textures.push_back(texture.x);
         currMesh.textures.push_back(texture.y);
 
-        vec3 normal = normals[v - 1];
+        vec3 normal = normals[n - 1];
         currMesh.normals.push_back(normal.x);
         currMesh.normals.push_back(normal.y);
         currMesh.normals.push_back(normal.z);
